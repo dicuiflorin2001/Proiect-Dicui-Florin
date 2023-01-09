@@ -1,7 +1,12 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Proiect_Dicui_Florin.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<Proiect_Dicui_FlorinContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Proiect_Dicui_FlorinContext") ?? throw new InvalidOperationException("Connection string 'Proiect_Dicui_FlorinContext' not found.")));
 
 var app = builder.Build();
 
