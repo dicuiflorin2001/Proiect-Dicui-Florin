@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Proiect_Dicui_Florin.Data;
 using Proiect_Dicui_Florin.Models;
+using Proiect_Dicui_Florin.Models.ViewModels;
 
 namespace Proiect_Dicui_Florin.Pages.Networks
 {
@@ -19,13 +21,24 @@ namespace Proiect_Dicui_Florin.Pages.Networks
             _context = context;
         }
 
-        public IList<Network> Network { get;set; } = default!;
+        public IList<Network> Network { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public NetworkIndexData NetworkData { get; set; }
+        public int NetworkID { get; set; }
+        public int ShopID { get; set; }
+        public async Task OnGetAsync(int? id, int? shopID)
         {
-            if (_context.Network != null)
+            NetworkData = new NetworkIndexData();
+            NetworkData.Networks = await _context.Network
+            .Include(i => i.Shops)
+            .OrderBy(i => i.NetworkName)
+            .ToListAsync();
+            if (id != null)
             {
-                Network = await _context.Network.ToListAsync();
+                NetworkID = id.Value;
+                Network publisher = NetworkData.Networks
+                .Where(i => i.ID == id.Value).Single();
+                NetworkData.Shops = publisher.Shops;
             }
         }
     }

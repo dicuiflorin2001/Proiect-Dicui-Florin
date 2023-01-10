@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model Proiect_Dicui_Florin.Pages.Networks.IndexModel
 
 @{
@@ -20,8 +20,14 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Network) {
-        <tr>
+        @foreach (var item in Model.NetworkData.Networks)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.NetworkID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.NetworkName)
             </td>
@@ -34,3 +40,32 @@
 }
     </tbody>
 </table>
+@if (Model.NetworkData.Shops != null)
+{
+    <h3>Shops Edited by Selected Network</h3>
+    <table class="table">
+
+        @foreach (var item in Model.NetworkData.Networks)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.NetworkID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+
+                <td>
+                    @{
+                        foreach (var b in item.Shops)
+                        {
+
+                            @b.ShopName @: @b.Director
+
+                            <br />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

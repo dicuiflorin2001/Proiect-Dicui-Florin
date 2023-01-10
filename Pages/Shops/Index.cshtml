@@ -35,10 +35,14 @@
 @foreach (var item in Model.Shop) {
         <tr>
             <td>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.ShopNameSort">
                 @Html.DisplayFor(modelItem => item.ShopName)
+                </a>
             </td>
             <td>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DirectorSort">
                 @Html.DisplayFor(modelItem => item.Director)
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Sales)
